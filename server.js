@@ -3,7 +3,7 @@ require("dotenv").config()
 
 const port = 8200
 
-const server = app.listen(port || process.env.PORT , () =>{
+const server = app.listen(port || 8100 , () =>{
 	console.log(`server runing on port ${port}`)
 })
 
