@@ -1,0 +1,9 @@
+touch server.js
+
+packages:
+- npm i express
+- npm i nodemon
+- npm install dotenv --save-dev 
+	+ require('dotenv').config()
+- npm i morgan --save-dev ( pg in log status + time phản hồi + IP máy... )
+- nom i helmet --save-dev (chống phần mềm thứ 3 xâm nhập vào Header)
