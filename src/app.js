@@ -12,7 +12,9 @@ app.use(morgan("dev")) // mode dev
 app.use(compression())
 
 // init db
-
+require('./bds/init.mongodb')
+const {checkOverLoad} = require('./helpers/check.connect')
+checkOverLoad()
 // init routes
 app.get('/' , (req, res, next) =>{
 	return res.status(200).json({

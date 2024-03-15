@@ -6,4 +6,43 @@ packages:
 - npm install dotenv --save-dev 
 	+ require('dotenv').config()
 - npm i morgan --save-dev ( pg in log status + time phản hồi + IP máy... )
-- nom i helmet --save-dev (chống phần mềm thứ 3 xâm nhập vào Header)
+- npm i helmet --save-dev (chống phần mềm thứ 3 xâm nhập vào Header)
+- npm i compression --save-dev (giảm tải trọng dung lượng tải)
+
+Cấu trúc thư mục src:
+- configs
+- controllers
+- models
+- services
+- utils --> Viết về những Function hàm ()
+- helpers --> Viết 
+- bds (database)
+
+connect MongoDB custom connect
+- Lưu ý 7 điều
+	1. Nhược điểm của cách Connect cũ
+trong môi trường Node có sử dụng require nên chỉ gọi 1 lần 
+các môi trường khác sẻ luôn tạo nhiều kết nối liên tục và quá tải connect
+
+	2. Connect mới , khuyên dùng
+Connect singleThunk bằng cách : 
+- tạo một instance giúp đảm bảo rằng chỉ có duy nhất một kết nối đến MongoDB được tạo ra 
+- và sử dụng trong toàn bộ ứng dụng. Điều này giúp tránh việc tạo nhiều kết nối không cần thiết và quản lý tốt hơn tài nguyên của hệ thống.
+
+	3. Kiểm tra hệ thống có bao nhiêu Connect
+- Tạo và viết trong thư mục Helpers để check bao nhiêu connect
+- const numConnection = mongoose.connection.readyState	kiểm tra tình trạng kết nối
+
+	4. Thông báo khi server quá tải Connect
+- Hàm check number kết nối , lõi CPU , bộ nhớ = require os , process
+- log ra các number trên
+
+	5. Có nên disConnect() liên tục không ?
+- Đối với MongoDB thì đã có sử dụng 1 hàm bull() hoặc MongoDB disConnect dùng để đóng mở kết nối khi cần
+
+	6. PollSize là gì ? Vì sao lại quan trọng ?
+- Kiểm tra Nhóm kết nối => tập hợp các nhóm dữ liệu có thể tái sử dụng || nếu không có sẻ tạo nhóm kết nối mới
+- Quan trong : tăng hiệu suất & giảm chi phí 
+
+	7 Nếu vượt quá kết nối PollSize ? 
+-Không thể vượt quá ngưỡng PollSize vì cơ sở dữ liệu sẻ được đưa vào hàng chờ kết nối để khi 1 kết nối dc free sẻ thế chổ	
