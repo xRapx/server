@@ -15,12 +15,9 @@ app.use(compression())
 require('./bds/init.mongodb')
 const {checkOverLoad} = require('./helpers/check.connect')
 checkOverLoad()
+
 // init routes
-app.get('/' , (req, res, next) =>{
-	return res.status(200).json({
-		message: "Hello World"
-	})
-})
+app.use('/', require('./routes'))
 
 // handing error
 
