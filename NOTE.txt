@@ -10,10 +10,11 @@ packages:
 - npm i compression --save-dev (giảm tải trọng dung lượng tải)
 - npm i bcrypt --save (hash password)
 - npm i crypto --save (create token private & public key)
+- npm i lodash --save (Lấy giá trị info cần thiết từ rep.body để render )
 
 Cấu trúc thư mục src:
 - configs  --> Kiểm soát lưu trữ cài đặt ứng dụng (ko lưu trữ thông tin nhạy cảm private)
-- controllers
+- controllers --> Xử lý nội dung tuyến đường 
 - models --> Khởi tạo Schema & Model
 - services
 - utils --> Viết về những Function hàm ()

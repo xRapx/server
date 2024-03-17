@@ -4,7 +4,7 @@ require('dotenv').config()
 const {db : {host , pass, user}} = require('../configs/config.mongodb')
 
 const mongoose = require('mongoose')
-const connectString = `mongodb+srv://${host}:${pass}@${user}.zdbqu9w.mongodb.net/?retryWrites=true&w=majority&appName=${user}`
+const connectString = `mongodb://localhost:27017/shopDev`
 const {countConnect} = require('../helpers/check.connect')
 
 class Database {
