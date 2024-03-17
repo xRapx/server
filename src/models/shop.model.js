@@ -22,12 +22,12 @@ const shopSchema = new Schema({
 		required:true,
 	},
 	status:{
-		type:Boolean,
+		type:String,
 		enum:['active', 'inactive'],
         default:'inactive'
 	},
 	verify:{
-		type:Boolean, Schema, Types,
+		type:Schema.Types.Boolean,
         default:false
 	},
 	roles:{
@@ -40,4 +40,4 @@ const shopSchema = new Schema({
 });
 
 //Export the model
-module.exports = mongoose.model(DOCUMENT_NAME, shopSchema);
+module.exports = model(DOCUMENT_NAME, shopSchema);
