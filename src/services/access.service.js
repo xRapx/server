@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt')
 const crypto = require('crypto')
 const KeyTokenService = require('./keyToken.service')
 const { createTokenPair } = require('../auth/authUtils')
+const {getInfoData} = require('../utils')
 
 const RoleShop = {
 	SHOP: 'SHOP',
@@ -35,9 +36,19 @@ class AccessService {
 			if(newShop) {
 				// created privateKEy, publicKey 
 				const {privateKey, publicKey} = crypto.generateKeyPairSync('rsa', {
-					modulusLength: 4096
+
+					modulusLength: 4096,
+					publicKeyEncoding:{  // Định dạng Key CryptoGraphy Standards mã hoá cho "rsa"
+						type:'pkcs1',
+						format:'pem'    // Mã nhị phân
+					},
+					privateKeyEncoding:{  
+						type:'pkcs1',
+						format:'pem'    
+					}
 				})
-				console.log({privateKey, publicKey}) // save collection keystore
+				//  save publicKey collection keystore
+				console.log({privateKey, publicKey}) 
 			
 				const publicKeyString = await KeyTokenService.createKeyToken({ // call service help conver tostring 
 					userId : newShop._id,
@@ -49,6 +60,9 @@ class AccessService {
 						message: 'publicKeyString Error'
 					}
 				}
+				//Khi có publickey
+				const publicKeyObject = crypto.createPublicKey(publicKeyString)
+				console.log(`Create Tokens PublickeyObject ::`, publicKeyObject)
 
 				//create token pair for new Shop
 				const tokens = await createTokenPair({userId : newShop._id, email} , publicKeyString, privateKey) // payload & key 
@@ -57,13 +71,11 @@ class AccessService {
 				return {
 					code : 201,
 					metadata : {
-						shop: newShop,
+						shop: getInfoData({fileds:['_id','name' ,'email'] , object: newShop }), // Chỉ in giá trị cần dùng trong req
 						tokens
 					}
 				}
-
 			}
-
 			// nếu newShop ko tồn tại thì sẻ trả về 
 			return {
 				code : 200,

@@ -4,24 +4,24 @@ require('dotenv').config()
 
 const dev =  {
 	app : {
-		port : process.env.DEV_DB_PORT || 8000,
+		port : process.env.DEV_APP_PORT || 8000,
 	},
 	db : {
-		host : process.env.DEV_DB_HOST,   
-		user : process.env.DEV_DB_USER,
-		pass : process.env.DEV_DB_PASS
+		host : process.env.DEV_DB_HOST || "localhost",   
+		name : process.env.DEV_DB_NAME || "shopDev",
+		port : process.env.DEV_DB_PORT || "27017"
 	}
 }
 
 
 const pro =  {
 	app : {
-		port : process.env.PRO_DB_PORT || 900,
+		port : process.env.PRO_APP_PORT || 9000,
 	},
 	db : {
-		host : process.env.PRO_DB_HOST,   
-		user : process.env.PRO_DB_USER,
-		pass : process.env.PRO_DB_PASS
+		host : process.env.PRO_DB_HOST || "localhost",   
+		name : process.env.PRO_DB_NAME || "shopPro",
+		port : process.env.PRO_DB_PORT || "27017"
 	}
 }
 
