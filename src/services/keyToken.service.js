@@ -1,15 +1,15 @@
 'use strict'
 
-const keytokenModel = require("../models/keytoken.model")
+const keyTokenModel = require("../models/keytoken.model")
 
 //  Thông qua class Service để conver model
 class KeyTokenService {
-	static createKeyToken = async ({userId, publicKey}) =>{
+	static createKeyToken = async ({userId, publicKey ,privateKey}) =>{
 		try {
-			const publicKeyString = publicKey.toString()
-			const tokens = await keytokenModel.create({
+			const tokens = await keyTokenModel.create({
 				user: userId,
-				publicKey: publicKeyString
+				publicKey,
+				privateKey
 			})
 
 			return tokens ? tokens.publicKey : null

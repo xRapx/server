@@ -14,9 +14,9 @@ packages:
 
 Cấu trúc thư mục src:
 - configs  --> Kiểm soát lưu trữ cài đặt ứng dụng (ko lưu trữ thông tin nhạy cảm private)
-- controllers --> Xử lý nội dung tuyến đường 
+- controllers --> Xử lý nội dụng req sau khi file service trả về
 - models --> Khởi tạo Schema & Model
-- services
+- services --> Xử lý các dịch vụ và xác thực
 - utils --> Viết về những Function hàm ()
 - helpers --> Viết 
 - bds (database)

@@ -5,7 +5,7 @@ POST {{url_dev}}/shop/signup
 Content-Type: application/json
 
 {
-	"nam" : "Shop Tiktok ",
-	"email" : "tiktok@gmail.com",
+	"nam" : "Shop Tiktok 1",
+	"email" : "tiktok 1@gmail.com",
 	"password" : "abc123"
 }

@@ -2,7 +2,7 @@
 
 const shopModel = require('../models/shop.model')
 const bcrypt = require('bcrypt')
-const crypto = require('crypto')
+const crypto = require('node:crypto')
 const KeyTokenService = require('./keyToken.service')
 const { createTokenPair } = require('../auth/authUtils')
 const {getInfoData} = require('../utils')
@@ -35,37 +35,39 @@ class AccessService {
 
 			if(newShop) {
 				// created privateKEy, publicKey 
-				const {privateKey, publicKey} = crypto.generateKeyPairSync('rsa', {
+				// 1. Định dạng Key CryptoGraphy Standards mã hoá cho "rsa"
+				// const {privateKey, publicKey} = crypto.generateKeyPairSync('rsa', {
 
-					modulusLength: 4096,
-					publicKeyEncoding:{  // Định dạng Key CryptoGraphy Standards mã hoá cho "rsa"
-						type:'pkcs1',
-						format:'pem'    // Mã nhị phân
-					},
-					privateKeyEncoding:{  
-						type:'pkcs1',
-						format:'pem'    
-					}
-				})
-				//  save publicKey collection keystore
-				console.log({privateKey, publicKey}) 
-			
-				const publicKeyString = await KeyTokenService.createKeyToken({ // call service help conver tostring 
+				// 	modulusLength: 4096,
+				// 	publicKeyEncoding:{  
+				// 		type:'pkcs1',
+				// 		format:'pem'    // Mã nhị phân
+				// 	},
+				// 	privateKeyEncoding:{  
+				// 		type:'pkcs1',
+				// 		format:'pem'    
+				// 	}
+				// })
+
+				// 2. Định dạng Key BASIC 
+				const publicKey = crypto.randomBytes(60).toString('hex')
+				const privateKey = crypto.randomBytes(60).toString('hex')
+
+				const keyStore = await KeyTokenService.createKeyToken({ // call service help conver tostring 
 					userId : newShop._id,
-                    publicKey  
+                    publicKey,
+					privateKey 
 				})
-				if(!publicKeyString){
+				if(!keyStore){
 					return {
 						code:'xxx',
-						message: 'publicKeyString Error'
+						message: 'KeyStore Error'
 					}
 				}
-				//Khi có publickey
-				const publicKeyObject = crypto.createPublicKey(publicKeyString)
-				console.log(`Create Tokens PublickeyObject ::`, publicKeyObject)
-
 				//create token pair for new Shop
-				const tokens = await createTokenPair({userId : newShop._id, email} , publicKeyString, privateKey) // payload & key 
+				const tokens = await createTokenPair({userId : newShop._id, email} , publicKey, privateKey) // payload & key 
+				
+				// after await verify with createTokenPair on authUtils.js 
 				console.log(`Create token success ::` , tokens)
 				
 				return {
