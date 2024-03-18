@@ -3,9 +3,10 @@
 
 POST {{url_dev}}/shop/signup
 Content-Type: application/json
+x-api-key: 77adf4b1296cb7d488bacda6e001d4add6db4063ccf41da9fd8ae4c779d29e400ccf45914917d18f949d61c7790ba2eb67d1114d5f56386ad384a1cdf13e8be4
 
 {
-	"nam" : "Shop Tiktok 1",
-	"email" : "tiktok 1@gmail.com",
+	"nam" : "Shop Tiktok 22322",
+	"email" : "tiktok1122112@gmail.com",
 	"password" : "abc123"
 }
