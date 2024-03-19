@@ -23,6 +23,20 @@ require('./bds/init.mongodb')
 app.use('/', require('./routes'))
 
 // handing error
+app.use((req, res, next) => {  // hàm middleware có 3 tham số
+	const error = new Error('Not Found')
+	error.status = 404
+	next(error)
+})
+
+app.use((error, req, res, next) => { // hàm xử lý error có 4 tham số
+	const statusCode = error.status || 500
+	return res.status(statusCode).json({
+		status : 'error',
+		code : statusCode,
+		message: error.message || "Internal Server Error"
+	})
+})
 
 
 module.exports = app

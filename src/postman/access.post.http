@@ -3,7 +3,7 @@
 
 POST {{url_dev}}/shop/signup
 Content-Type: application/json
-x-api-key: 77adf4b1296cb7d488bacda6e001d4add6db4063ccf41da9fd8ae4c779d29e400ccf45914917d18f949d61c7790ba2eb67d1114d5f56386ad384a1cdf13e8be4
+x-api-key: 8e849b185024c9c44a2d99934386140f8cb6544fe3e1e97a3c879d834d37671862b16e716185c54b9e74c1b41d5a9870eff9a027921035205a1ab62efabee3ef
 
 {
 	"nam" : "Shop Tiktok 22322",
