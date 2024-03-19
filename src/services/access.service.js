@@ -16,13 +16,12 @@ const RoleShop = {
 }
 
 class AccessService {
-	static signUp = async ({name, email, password}) =>{
-		// try {
-		
+	static signUp = async ({name, email, password}) =>{		
 			// 1. check email exits ??			
 			const holderShop = await shopModel.findOne({email}).lean()
 			if(holderShop){
-				throw new BadRequestError('Error : Shop is already registered!')
+				throw new BadRequestError('Error : Shop is already registered!');
+
 			}
 
 			const passwordHash = await bcrypt.hash(password,10)
@@ -34,20 +33,6 @@ class AccessService {
 
 			if(newShop) {
 				// created privateKEy, publicKey 
-				// 1. Định dạng Key CryptoGraphy Standards mã hoá cho "rsa"
-				// const {privateKey, publicKey} = crypto.generateKeyPairSync('rsa', {
-
-				// 	modulusLength: 4096,
-				// 	publicKeyEncoding:{  
-				// 		type:'pkcs1',
-				// 		format:'pem'    // Mã nhị phân
-				// 	},
-				// 	privateKeyEncoding:{  
-				// 		type:'pkcs1',
-				// 		format:'pem'    
-				// 	}
-				// })
-
 				// 2. Định dạng Key BASIC 
 				const publicKey = crypto.randomBytes(60).toString('hex')
 				const privateKey = crypto.randomBytes(60).toString('hex')
@@ -57,6 +42,7 @@ class AccessService {
                     publicKey,
 					privateKey 
 				})
+				
 				if(!keyStore){
 					return {
 						code:'xxx',
@@ -83,14 +69,6 @@ class AccessService {
 				code : 200,
 				metadata : null
 			}
-
-		// } catch (error) {
-		// 	return {
-		// 		code:'xxx',
-		// 		message: error.message,
-		// 		status:'error'
-		// 	}
-		// }
 	}
 }
 

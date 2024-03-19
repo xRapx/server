@@ -11,9 +11,9 @@ const ReasonStatusCode = {
 }
 
 class ErrorResponse extends Error {
-	constructor(status, message) {
-        super(message);
-        this.status = status;
+	constructor(message , status ) {
+        super(message)
+        this.status = status
     }
 }
 // Kế thừa Error của NodeJS

@@ -5,8 +5,8 @@ const crypto = require('crypto')
 
 const findById = async (key) =>{
 	// check test func key
-	const newKey = await apikeyModel.create({key : crypto.randomBytes(64).toString('hex') , permissions : ['0000']})
-	console.log(`Test newKey :: `,newKey)
+	// const newKey = await apikeyModel.create({key : crypto.randomBytes(64).toString('hex') , permissions : ['0000']})
+	// console.log(`Test newKey :: `,newKey)
 	
 	const objKey = await apikeyModel.findOne({ key , status : true }).lean()
 	return objKey
