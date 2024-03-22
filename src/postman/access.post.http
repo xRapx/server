@@ -6,7 +6,7 @@ Content-Type: application/json
 x-api-key: 9b4fbfc2da060caaac891a43a9774e3d8ed62a2c6803bb0507bdceb15e351637efc14746faf837c892276ce062b696a494e55c3c90228c84cdafb56c0309bf6b
 
 {
-	"nam" : "Shop Tiktok 3",
+	"name" : "Shop Tiktok 3",
 	"email" : "tiktok 3@gmail.com",
 	"password" : "abc123"
 }

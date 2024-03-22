@@ -2,6 +2,9 @@ const compression = require('compression')
 const express = require('express')
 const morgan = require('morgan')
 const app = express()
+const cors = require('cors');
+
+app.use(cors())
 
 // init middleware
 app.use(morgan("dev")) // mode dev

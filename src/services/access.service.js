@@ -6,17 +6,76 @@ const crypto = require('node:crypto')
 const KeyTokenService = require('./keyToken.service')
 const { createTokenPair } = require('../auth/authUtils')
 const {getInfoData} = require('../utils')
-const { BadRequestError,ConflictRequestError,AuthFailureError } = require('../core/error.respon')
+const { BadRequestError,ConflictRequestError,AuthFailureError, ForbiddenError } = require('../core/error.respon')
 const { findByEmail } = require('./shop.service')
+const {verifyJWT} = require('../auth/authUtils')
 
 const RoleShop = {
 	SHOP: 'SHOP',
 	WRITER : 'WRITER',
-	EDITOR: 'EDITOR',
+	EDITOR: 'EDITOR',	
 	ADMIN:'ADMIN'
 }
 
 class AccessService {
+//=====================================Handle RefreshTokenUsed=====================================================================================================
+	/*
+		1 - Thời điểm hết hạn của accsesstoken thì us check refreshTokenUsed :[] có refreshToken cũ đang được sử dụng hay ko ?
+		2 - Nếu có thì sẻ verify RT xem là user nào trong db
+		3 - Xoá keyStore userId
+		4 - Nếu RT cũ đó không có xử dụng lại thì phải check lại 1 có đúng RT trong db ko? 
+		5 - Để verify user đó là ai có trong db ko ?
+		6 - Check userID có trong db ko ?
+		7 - Cấp tokens mới cho User
+		8 - Update refreshToken và đưa refreshToken cũ vào --> refreshTokenUsed : []
+		9 - return về token mới cho user
+	*/
+	static handleRefreshToken = async (refreshToken) => {
+		// 1.
+		const foundToken = await KeyTokenService.foundByRefreshTokenUsed(refreshToken)
+		if(foundToken) {
+		// 2.	
+			const {userId, email} = await verifyJWT(refreshToken ,foundToken.privateKey )
+			console.log({userId, email});
+		// 3.
+			await KeyTokenService.deleteKeyById(userId)
+			throw new ForbiddenError('Something Wrong Happend! Pls reLogin')
+		}
+		// 4.
+		const holderToken = await KeyTokenService.findByRefreshToken(refreshToken)
+		if(!holderToken) throw new AuthFailureError('Shop not registered!')
+		// 5.
+		const {userId, email} = await verifyJWT(refreshToken ,holderToken.privateKey )
+		console.log(`[2]---`,{userId, email});
+		// 6.
+		const foundShop = await findByEmail({email})
+		if(!foundShop) throw new AuthFailureError('Shop not registered!')
+		// 7.
+		const tokens = await createTokenPair({ userId , email} , holderToken.publicKey, holderToken.privateKey) // payload & key
+		// 8.
+		await holderToken.updateOne({
+			$set:{
+				refreshToken: tokens.refreshToken
+			},
+			$addToSet:{
+				refreshTokenUsed : refreshToken
+			},
+		})
+		// 9.
+		return {
+			user: {userId, email},
+			tokens
+		}
+	}
+
+//=====================================LOG OUT=====================================================================================================
+	
+	static logout = async (keyStore) => {
+		const delKey = await KeyTokenService.removeByKeyId(keyStore._id)
+		console.log(`delkey ::::::>>> `,delKey)
+		return delKey
+	}
+
 //=====================================LOG IN=====================================================================================================
 	/*
 		1 - check email in dbs
