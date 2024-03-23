@@ -18,6 +18,38 @@ const RoleShop = {
 }
 
 class AccessService {
+
+	static handleRefreshTokenV2 = async ({keyStore, user, refreshToken}) => {
+		const {userId,email} = user;
+		if (typeof refreshToken === 'object' && refreshToken !== null) {
+			console.log('Biến là một đối tượng');
+		  } else {
+			console.log('Biến không phải là một đối tượng');
+		  }
+
+		if(keyStore.refreshTokenUsed.includes(refreshToken)){
+			await KeyTokenService.deleteKeyById(userId)
+			throw new ForbiddenError('Something Wrong Happend! Pls reLogin')
+		}
+		if(keyStore.refreshToken !== refreshToken) throw new AuthFailureError('Shop not registered!')
+
+		const foundShop = await findByEmail({email})
+		if(!foundShop) throw new AuthFailureError('Shop not registered!')
+
+		const tokens = await createTokenPair({ userId , email} , keyStore.publicKey, keyStore.privateKey) // payload & key
+		await keyStore.updateOne({
+			$set:{
+				refreshToken: tokens.refreshToken
+			},
+			$addToSet:{
+				refreshTokenUsed : refreshToken
+			},
+		})
+		return {
+			user,
+			tokens
+		}
+	}
 //=====================================Handle RefreshTokenUsed=====================================================================================================
 	/*
 		1 - Thời điểm hết hạn của accsesstoken thì us check refreshTokenUsed :[] có refreshToken cũ đang được sử dụng hay ko ?

@@ -36,7 +36,8 @@ app.use((error, req, res, next) => { // hàm xử lý error có 4 tham số
 	const statusCode = error.status || 500
 	return res.status(statusCode).json({
 		status : 'error',
-		code : statusCode,
+		code : statusCode,	
+		stack : error.stack, // kiểm tra lỗi ở môi trường dev / ko dùng trên productions
 		message: error.message || "Internal Server Error"
 	})
 })

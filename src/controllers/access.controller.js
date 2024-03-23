@@ -7,11 +7,21 @@ const {OK, CREATED , SuccessResponse } = require('../core/success.response')
 class AccessController {
 	
 	handleRefreshToken = async (req, res , next) => {
+		// V1
+		// new SuccessResponse({
+		// 	message : "Get Token Success",
+		// 	metadata : await AccessService.handleRefreshToken(req.body.refreshToken),
+		// }).send(res)
 
+		// V2 no need accessToken Fixed
 		new SuccessResponse({
-			message : "Get Token Success",
-			metadata : await AccessService.handleRefreshToken(req.body.refreshToken),
-		}).send(res)
+            message : "Get Token V2 Success",		
+            metadata : await AccessService.handleRefreshTokenV2({
+				keyStore : req.keyStore,
+				user: req.user,
+				refreshToken: req.refreshToken
+			}),
+        }).send(res)
 	}
 
 	logout = async (req, res , next) => {
