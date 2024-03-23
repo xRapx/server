@@ -8,18 +8,20 @@ class ProductService{
 		type:'Clothing',
 		payload
 	*/
-
+	// swith case 
 	static async createProduct(type, payload) {
 		switch (type) {
 			case 'Electronics' :
-				return await Electronics(payload).createProduct()
+				return new Electronics(payload).createProduct()
 			case 'Clothing' :
-				return await Clothing(payload).createProduct()
+				return new Clothing(payload).createProduct()
 			default:
-				throw new BadRequestError(`Invalid Product Types ${type}`)
-		
+				throw new BadRequestError(`Invalid Product Types ${type}`)	
 			}
 	}
+	// Optimize 
+	
+
 }
 
 
@@ -40,18 +42,21 @@ class Product {
 
 	//create new product
 
-	async createProduct(){
-		return await product.create(this)
+	async createProduct(product_id){
+		return await product.create({...this, _id : product_id})
 	}
 }
 
 //define sub=class for diffrend product types Clothing
 class Clothing extends Product {
 	async createProduct() {
-		const newClothing = await clothing.create(this.product_attributes)
+		const newClothing = await clothing.create({
+			...this.product_attributes,
+			product_shop : this.product_shop
+		})
 		if(!newClothing) throw new BadRequestError('create new Clothing error')
 
-		const newProduct = await super.createProduct()
+		const newProduct = await super.createProduct(newClothing._id)
 		if(!newProduct) throw new BadRequestError('Create new Product Error')
 		
 		return newProduct;
@@ -62,10 +67,13 @@ class Clothing extends Product {
 //define sub=class for diffrend product types Electronics
 class Electronics extends Product {
 	async createProduct() {
-		const newElectronic = await electronic.create(this.product_attributes)
+		const newElectronic = await electronic.create({
+			...this.product_attributes,
+			product_shop : this.product_shop
+		})
 		if(!newElectronic) throw new BadRequestError('create new Electronics error')
 
-		const newProduct = await super.createProduct()
+		const newProduct = await super.createProduct(newElectronic._id)
 		if(!newProduct) throw new BadRequestError('Create new Product Error')
 		
 		return newProduct;
