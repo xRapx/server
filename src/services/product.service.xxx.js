@@ -8,22 +8,21 @@ class ProductService{
 		type:'Clothing',
 		payload
 	*/
-	// switch case 
-	static async createProduct(type, payload) {
-		switch (type) {
-			case 'Electronics' :
-				return new Electronics(payload).createProduct()
-			case 'Clothing' :
-				return new Clothing(payload).createProduct()
-			default:
-				throw new BadRequestError(`Invalid Product Types ${type}`)	
-			}
-	}
 	// Optimize 
+	static productRegistry = {}
+
+	static registerProductType ( type, classRef ){
+		ProductService.productRegistry[ type ] = classRef
+
+	}
 	
+	static async createProduct(type, payload) {
+		const productClass = ProductService.productRegistry[type]
+		if(!productClass) throw new BadRequestError(`Invalid Product Types ${type}`)
 
+		return new productClass(payload).createProduct()
+	}
 }
-
 
 class Product {
 	constructor({
@@ -95,5 +94,10 @@ class Furniture extends Product {
 		return newProduct;
 	}
 }
+
+//register product types
+ProductService.registerProductType('Electronics', Electronics)
+ProductService.registerProductType('Clothing', Clothing)
+ProductService.registerProductType('Furniture', Furniture)
 
 module.exports = ProductService;
