@@ -117,7 +117,6 @@ class AccessService {
 		5 - get data return login
 	*/
 	static login = async ({email, password, refreshToken = null}) => {
-
 		// 1.
 		const foundShop = await findByEmail({email})
 			//CHECK
@@ -135,7 +134,7 @@ class AccessService {
 		// 4.
 			// Nếu có biến sử dụng lại thì phải khai báo có thể chuyển đổi thành destructuring 
 			// const {_id : userId} = foundShop 
-			const userId = foundShop._id
+		const userId = foundShop._id
 		const tokens = await createTokenPair({ userId , email} , publicKey, privateKey) // payload & key 				
 			//CHECK after await verify with createTokenPair on authUtils.js 
 			console.log(`Create token success LOGIN ::` , tokens)
@@ -150,7 +149,7 @@ class AccessService {
 
 		// 5.
 		return {			
-			shop: getInfoData({fileds:['_id','name' ,'email'] , object: foundShop }),
+			shop: getInfoData({fileds:['_id','name' ,'email','pic'] , object: foundShop }),
 			tokens
 		}
 	}
@@ -200,7 +199,7 @@ class AccessService {
 				return {
 					code : 201,
 					metadata : {
-						shop: getInfoData({fileds:['_id','name' ,'email'] , object: newShop }), // Chỉ in giá trị cần dùng trong req
+						shop: getInfoData({fileds:['_id','name' ,'email','pic'] , object: newShop }), // Chỉ in giá trị cần dùng trong req
 						tokens
 					}
 				}

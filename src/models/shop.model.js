@@ -21,6 +21,11 @@ const shopSchema = new Schema({
 		type:String,
 		required:true,
 	},
+	pic:{
+		type:String,
+		required:true,
+		default: "https://imgdrop.io/image/aDjI"
+	},
 	status:{
 		type:String,
 		enum:['active', 'inactive'],
