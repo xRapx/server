@@ -24,7 +24,7 @@ const shopSchema = new Schema({
 	avatar:{
 		type:String,
 		required:true,
-		default: "/assets/no-user.jpg"
+		default: "https://server-ecommorse.onrender.com/assets/no-user.jpg"
 	},
 	status:{
 		type:String,
