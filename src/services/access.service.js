@@ -149,7 +149,7 @@ class AccessService {
 
 		// 5.
 		return {			
-			shop: getInfoData({fileds:['_id','name' ,'email','pic'] , object: foundShop }),
+			shop: getInfoData({fileds:['_id','name' ,'email','avatar'] , object: foundShop }),
 			tokens
 		}
 	}
@@ -199,7 +199,7 @@ class AccessService {
 				return {
 					code : 201,
 					metadata : {
-						shop: getInfoData({fileds:['_id','name' ,'email','pic'] , object: newShop }), // Chỉ in giá trị cần dùng trong req
+						shop: getInfoData({fileds:['_id','name' ,'email','avatar'] , object: newShop }), // Chỉ in giá trị cần dùng trong req
 						tokens
 					}
 				}
