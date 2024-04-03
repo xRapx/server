@@ -1,12 +1,11 @@
 ### signup
 @url_dev=http://localhost:8200/v1/api
 
-POST {{url_dev}}/shop/signup
+POST {{url_dev}}/shop/login
 Content-Type: application/json
 x-api-key: 2873373b3b7cb273afc343a497446bf7a0516cb0633549e2e1736d1c6ccc48ac2f723dd3b1122f2e0188189371b194e2c6114e27a392dd542e268de8b7e7b2bf
 
 {
-	"name" : "quan",
-	"email" : "quan@gmail.com",
+	"email" : "hoang@gmail.com",
 	"password" : "abc123"
 }
