@@ -21,10 +21,10 @@ const shopSchema = new Schema({
 		type:String,
 		required:true,
 	},
-	pic:{
+	avatar:{
 		type:String,
 		required:true,
-		default: "https://imgdrop.io/image/aDjI"
+		default: "/assets/no-user.jpg"
 	},
 	status:{
 		type:String,

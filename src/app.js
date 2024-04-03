@@ -17,6 +17,7 @@ app.use(express.json())
 app.use(express.urlencoded({
 	extended: true
 }))
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
 // init db
 require('./bds/init.mongodb')
 // const {checkOverLoad} = require('./helpers/check.connect')
